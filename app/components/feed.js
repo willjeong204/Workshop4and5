@@ -1,3 +1,4 @@
+import {postStatusUpdate} from '../server'
 import {getFeedData} from '../server';
 import React from 'react';
 import FeedItem from './feeditem';
@@ -19,6 +20,25 @@ export default class Feed extends React.Component {
       contents: []
     };
   }
+  refresh() {
+    getFeedData(this.props.user, (feedData) => {
+      this.setState(feedData);
+    });
+ }
+
+ onPost(postContents) {
+   // Send to server.
+   // We could use geolocation to get a location,
+   // but let's fix it to Amherst for now.
+   postStatusUpdate(4, "Amherst, MA", postContents, () => {
+     // Database is now updated. Refresh the feed.
+     this.refresh();
+   });
+ }
+
+ componentDidMount() {
+ this.refresh();
+ }
   render() {
     return (
       <div>

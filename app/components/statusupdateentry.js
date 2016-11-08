@@ -1,5 +1,44 @@
 import React from 'react';
 export default class StatusUpdateEntry extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ""
+    };
+  }
+
+ /**
+ * Called when the user clicks the 'post' button.
+ * Triggers the `onPost` prop if the post isn't empty, and clears
+ * the component.
+ */
+ handlePost(e) {
+   // Prevent the event from "bubbling" up the DOM tree.
+   e.preventDefault();
+   // Trim whitespace from beginning + end of entry.
+   var statusUpdateText = this.state.value.trim();
+   if (statusUpdateText !== "") {
+     /* TODO: How do we send the post to the server
+     + update the Feed? */
+     // Reset status update.
+     this.props.onPost(statusUpdateText);
+     this.setState({value: ""});
+   }
+ }
+
+ /**
+ * Called when the user types a character into the status update box.
+ * @param e An Event object.
+ */
+ handleChange(e) {
+   // Prevent the event from "bubbling" up the DOM tree.
+   e.preventDefault();
+   // e.target is the React Virtual DOM target of the
+   // input event -- the <textarea> element. The textarea's
+   // `value` is the entire contents of what the user has
+   // typed in so far.
+   this.setState({value: e.target.value});
+ }
   render() {
     return (
       <div className="fb-status-update-entry panel panel-default">

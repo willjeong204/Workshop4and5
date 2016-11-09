@@ -37,7 +37,7 @@ export default class Feed extends React.Component {
  }
 
  componentDidMount() {
- this.refresh();
+   this.refresh();
  }
   render() {
     return (
@@ -51,14 +51,5 @@ export default class Feed extends React.Component {
       </div>
     )
   }
-  componentDidMount() {
-    getFeedData(this.props.user, (feedData) => {
-      // Note: setState does a *shallow merge* of
-      // the current state and the new state. If
-      // state was currently set to {foo: 3}, and
-      // we setState({bar: 5}), state would then be
-      // {foo: 3, bar: 5}. This won't be a problem here.
-      this.setState(feedData);
-    });
-  }
+  
 }

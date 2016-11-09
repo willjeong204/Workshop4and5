@@ -7,6 +7,7 @@ export default class FeedItem extends React.Component {
   constructor(props) {
     super(props);
     // The FeedItem's initial state is what the Feed passed to us.
+
     this.state = props.data;
   }
   handleCommentPost(commentText) {
@@ -69,12 +70,7 @@ export default class FeedItem extends React.Component {
     if (this.didUserLike()) {
       likeButtonText = "Unlike";
     }
-    // Skipping the first part of this method, which is unchanged.
-    <a href="#" onClick={(e) => this.handleLikeClick(e)}>
-      <span className="glyphicon glyphicon-thumbs-up"></span>
-      {likeButtonText}
-    </a>
-    // The rest of this method is unchanged
+
     var data = this.state;
     var contents;
     switch(data.type) {
@@ -109,9 +105,12 @@ export default class FeedItem extends React.Component {
             <div className="col-md-12">
               <ul className="list-inline">
                 <li>
-                  <a href="#">
-                    <span className="glyphicon glyphicon-thumbs-up">
-                    </span> Like</a>
+
+                  <a href="#" onClick={(e) => this.handleLikeClick(e)}>
+                    <span className="glyphicon glyphicon-thumbs-up"></span>
+                    {likeButtonText}
+                  </a>
+
                   </li>
                   <li>
                     <a href="#">
@@ -144,6 +143,9 @@ export default class FeedItem extends React.Component {
                   return (
                     <Comment key={i}
                       author={comment.author}
+                      feedID={data._id}
+                      data={comment}
+                      commentID={i}
                       postDate={comment.postDate}>
                       {comment.contents}
                     </Comment>

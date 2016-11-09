@@ -99,7 +99,8 @@ export function postComment(feedItemId, author, contents, cb) {
   feedItem.comments.push({
     "author": author,
     "contents": contents,
-    "postDate": new Date().getTime()
+    "postDate": new Date().getTime(),
+    "likeCounter": []
   });
   writeDocument('feedItems', feedItem);
   // Return a resolved version of the feed item so React can
@@ -148,4 +149,32 @@ export function unlikeFeedItem(feedItemId, userId, cb) {
   // Return a resolved version of the likeCounter
   emulateServerReturn(feedItem.likeCounter.map((userId) =>
   readDocument('users', userId)), cb);
+}
+/**
+ * Adds a 'like' to a comment.
+ */
+export function likeComment(feedItemId, commentIdx, userId, cb, obj) {
+  var feedItem = readDocument('feedItems', feedItemId);
+  var comment = feedItem.comments[commentIdx];
+  comment.likeCounter.push(userId);
+  writeDocument('feedItems', feedItem);
+  obj.setState({likeCounter: comment.likeCounter});
+  //comment.author = readDocument('users', comment.author);
+  emulateServerReturn(comment.likeCounter, cb);
+}
+
+/**
+ * Removes a 'like' from a comment.
+ */
+export function unlikeComment(feedItemId, commentIdx, userId, cb, obj) {
+  var feedItem = readDocument('feedItems', feedItemId);
+  var comment = feedItem.comments[commentIdx];
+  var userIndex = comment.likeCounter.indexOf(userId);
+  if (userIndex !== -1) {
+    comment.likeCounter.splice(userIndex, 1);
+    writeDocument('feedItems', feedItem);
+  }
+  //comment.author = readDocument('users', comment.author);
+  obj.setState({likeCounter: comment.likeCounter});
+  emulateServerReturn(comment.likeCounter, cb);
 }
